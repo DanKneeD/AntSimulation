@@ -6,23 +6,20 @@ public class Map extends JFrame {
   private static final int GRID_SIZE = 1;
   private static final int WINDOW_SIZE = 1000;
 
-  public static int[][] grid;
   public static JLabel[][] labels;
   public static int[][] numAnts;
-  public static int[][][] phermoneValue;
+  public static int[][][] phermoneValue;//x,y,1=red 2=green
 
   public Map() {
     System.out.println("Map Created");
     setLayout(new GridLayout(SIZE, SIZE));
 
-    grid = new int[SIZE][SIZE];
     labels = new JLabel[SIZE][SIZE];
     numAnts = new int[SIZE][SIZE];
     phermoneValue = new int[SIZE][SIZE][3];
 
     for (int i = 0; i < SIZE; i++) {
       for (int j = 0; j < SIZE; j++) {
-        grid[i][j] = 4;
         numAnts[i][j] = 0;
         phermoneValue[i][j][1] = 0;
 
@@ -42,32 +39,32 @@ public class Map extends JFrame {
     setVisible(true);
   }
 
-  public static void changePanel(int i, int j, Color col) {
+  public static void changeColorPanel(int i, int j, Color col) {
     labels[i][j].setBackground(col);
   }
 
   public static void updatePhermones() {
     for (int i = 0; i < SIZE; i++) {
       for (int j = 0; j < SIZE; j++) {
-        if (phermoneValue[i][j][1] > 0) {
-          phermoneValue[i][j][1] -= 3;
-          labels[i][j].setBackground(
-              new Color(phermoneValue[i][j][1], 0, 0, phermoneValue[i][j][1])
-            );
+        if (phermoneValue[i][j][1] > 0) { // if there is a pherm value and if there is not a ant
+          phermoneValue[i][j][1] -= 0;
+          if (!isAntAt(i, j)) {
+            labels[i][j].setBackground(
+                new Color(phermoneValue[i][j][1], 0, 0, phermoneValue[i][j][1])
+              );
+          }
+        }
+        if (phermoneValue[i][j][2] > 0) {
+          phermoneValue[i][j][2] -= 0;
+          if (!isAntAt(i, j)) {
+            labels[i][j].setBackground(
+                new Color(0, phermoneValue[i][j][2], 0, phermoneValue[i][j][2])
+              );
+          }
         }
       }
     }
 
-    for (int i = 0; i < SIZE; i++) {
-      for (int j = 0; j < SIZE; j++) {
-        if (phermoneValue[i][j][2] > 0) {
-          phermoneValue[i][j][2] -= 3;
-          labels[i][j].setBackground(
-              new Color(0, phermoneValue[i][j][2], 0, phermoneValue[i][j][2])
-            );
-        }
-      }
-    }
     // Repaint the JFrame to update the visual state of the GUI
     JFrame.getFrames()[0].repaint();
   }
@@ -83,11 +80,9 @@ public class Map extends JFrame {
     return false;
   }
 
-  public static void createAntAt(int i, int j, int state) {
-    changePanel(i, j, Color.black);
+  public static void createAntAt(int i, int j) {
+    changeColorPanel(i, j, Color.black);
     numAnts[i][j] += 1;
-    grid[i][j] = state;
-    System.out.println(state);
     // Map.phermoneValue[posI][posJ][1] = -1; idk about this one
   }
 }

@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class App {
   private static List<Ant> ants = new ArrayList<>();
-  private static int numOfAnts = 10;
+  private static int numOfAnts = 1;
   private static int timeDelay = 1;
 
   public static void main(String[] args) throws Exception {
@@ -49,6 +49,8 @@ public class App {
           // If the simulation duration has been reached, stop the timer
           if (++ticksElapsed >= simulationDuration) {
             ((Timer) e.getSource()).stop();
+
+            System.exit(0);
           }
         }
       }
